@@ -8,6 +8,7 @@ nbproject
 .buildpath
 .project
 .settings
+composer.lock
 
 # windows thumbnail cache
 Thumbs.db
@@ -31,3 +32,4 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+web/qr_code
