@@ -83,4 +83,8 @@ class Data extends \yii\db\ActiveRecord
         return $this->hasMany(History::class, ['data_id' => 'id']);
     }
 
+    public function getAbsoluteUrl()
+    {
+        return Yii::$app->urlManager->createAbsoluteUrl(['site/redirect', 'code' => $this->code]);
+    }
 }

@@ -20,34 +20,45 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
-            'name',
-            'url:url',
-            'code',
-            [
-                'attribute' => 'qr_file',
-                'format' => 'raw',
-                'value' => function (Data $model) {
-                    return Html::img($model->qr_file, ['width' => '100px']);
-                }
+                //'id',
+                    'name',
+                    [
+                            'attribute' => 'url',
+                            'format' => 'raw',
+                            'value' => function (Data $model) {
+                                return Html::a(
+                                        $model->url,
+                                        $model->getAbsoluteUrl(),
+                                        [
+                                                'target' => '_blank',
+                                        ]
+                                );
+                            }
+                    ],
+                    'code',
+                    [
+                            'attribute' => 'qr_file',
+                            'format' => 'raw',
+                            'value' => function (Data $model) {
+                                return Html::img($model->qr_file, ['width' => '100px']);
+                            }
+                    ],
+                    'count',
+                    'created_at',
+                    [
+                            'class' => ActionColumn::className(),
+                            'visible' => !Yii::$app->user->isGuest,
+                            'template' => '{delete}',
+                            'urlCreator' => function ($action, Data $model, $key, $index, $column) {
+                                return Url::toRoute([$action, 'id' => $model->id]);
+                            }
+                    ],
             ],
-            'count',
-            'created_at',
-            //'updated_at',
-            [
-                'class' => ActionColumn::className(),
-                'visible' => !Yii::$app->user->isGuest,
-                'template' => '{delete}',
-                'urlCreator' => function ($action, Data $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
-            ],
-        ],
     ]); ?>
 
 

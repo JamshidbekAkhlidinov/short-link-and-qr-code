@@ -19,6 +19,7 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 use Yii;
 use yii\base\Model;
+use yii\db\Exception;
 
 class ShortLinkForm extends Model
 {
@@ -43,6 +44,10 @@ class ShortLinkForm extends Model
         ];
     }
 
+    /**
+     * @throws Exception
+     * @throws \yii\base\Exception
+     */
     public function save()
     {
         if ($model = Data::findOne(['url' => $this->url])) {
@@ -57,7 +62,10 @@ class ShortLinkForm extends Model
         $model = new Data();
         $model->name = $this->name;
         $model->url = $this->url;
-        $model->code = \Yii::$app->security->generateRandomString(6);
+        do {
+            $code = str_replace('-', '_', Yii::$app->security->generateRandomString(6));
+        } while (Data::find()->where(['code' => $code])->exists());
+        $model->code = $code;
         $isSave = $model->save(false);
 
         if (!$isSave) {
@@ -77,13 +85,14 @@ class ShortLinkForm extends Model
             backgroundColor: new Color(255, 255, 255)
         );
 
+        /*
         // Create generic logo
         $logo = new Logo(
             path: Yii::getAlias('@webroot/images/logo.jpg'),
             resizeToWidth: 50,
             punchoutBackground: true
         );
-
+        */
         // Create generic label
         $label = new Label(
             text: $model->name,
@@ -92,7 +101,7 @@ class ShortLinkForm extends Model
 
         $result = $writer->write(
             qrCode: $qrCode,
-            logo: $logo,
+            //logo: $logo,
             label: $label,
         );
         $filePath = $this->makeFolderAndGetPath($model->code);
