@@ -7,12 +7,15 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'homeUrl' => ['site/index'],
+    'defaultRoute' => 'site/index',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
+            'baseUrl' => '/',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'OjTfMuS0JDYtl1BqYuHHHW60DUaZ0b12',
         ],
@@ -43,6 +46,7 @@ $config = [
         ],
         'db' => $db,
         'urlManager' => [
+            'baseUrl' => '/',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
