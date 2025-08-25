@@ -23,23 +23,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'url:url',
-            'code',
-            [
-                'attribute' => 'qr_file',
-                'format' => 'raw',
-                'value' => function (Data $model) {
-                    return Html::img($model->qr_file, ['width' => '300px']);
-                }
+            'model' => $model,
+            'attributes' => [
+                    'id',
+                    'name',
+                    [
+                            'attribute' => 'url',
+                            'format' => 'raw',
+                            'value' => function (Data $model) {
+                                return Html::a(
+                                        $model->url,
+                                        $model->getAbsoluteUrl(),
+                                        [
+                                                'target' => '_blank',
+                                        ]
+                                );
+                            }
+                    ],
+                    'code',
+                    [
+                            'attribute' => 'qr_file',
+                            'format' => 'raw',
+                            'value' => function (Data $model) {
+                                return Html::img($model->qr_file, ['width' => '300px']);
+                            }
+                    ],
+                    'count',
+                    'created_at',
+                    'updated_at',
             ],
-            'count',
-            'created_at',
-            'updated_at',
-        ],
     ]) ?>
 
 </div>

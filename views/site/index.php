@@ -26,9 +26,7 @@ $this->title = 'My Yii Application';
             <?= $activeForm->field($form, 'name')->textInput(['value' => 'Google']) ?>
             <?= $activeForm->field($form, 'url')->textInput(['value' => 'https://www.google.com/']) ?>
             <?= Html::button('Create', ['class' => 'btn btn-primary', 'id' => 'create-link']) ?>
-
             <?php ActiveForm::end() ?>
-
             <div id="result"></div>
 
 
@@ -39,6 +37,12 @@ $this->title = 'My Yii Application';
 
 <?php
 $this->registerJs(<<<JS
+    $("#short-link-form").on("keydown", "input, textarea", function (e) {
+    if (e.key === "Enter") {
+        e.preventDefault(); 
+        $("#create-link").trigger("click"); 
+    }
+});
     $("#create-link").on('click', function () {
         var form = $("#short-link-form");
         var data = form.serialize();
